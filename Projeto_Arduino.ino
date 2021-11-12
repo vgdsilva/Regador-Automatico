@@ -10,6 +10,7 @@
 #define Sensor2 A1
 #define Sensor3 A2
 #define Sensor4 A3
+int bomba = 10;
 IRrecv receptor(11);
 decode_results resultado;
 
@@ -26,12 +27,15 @@ int minuto = 0;
 int hora = 0;
 
 void setup() {
+  pinMode(bomba,OUTPUT);
+  digitalWrite(bomba, HIGH);
   lcd.begin(16, 2);
   delay(500); // delay de 0,5
 
   Serial.begin(9600); // monitor serial 9600 bps
   dht.begin(); // inicializa a função
   Serial.println("Usando o Sensor DHT");
+  
   sensor_t sensor;
   receptor.enableIRIn();
 
@@ -39,7 +43,6 @@ void setup() {
 
 void loop() {
   if(isTimerselected == 0){
-
     if(wl == 0){
       lcd.clear();
       lcd.print("Bem vindo");
@@ -176,26 +179,26 @@ void loop() {
 }
 
 void Regando() {
+  Serial.println("aaaaaaaaaaaaaaaaa");
+  digitalWrite(bomba, LOW);
   lcd.print("Regando...");
   lcd.setCursor(0, 1);
 
-  delay(5000);
+  delay(10000);
+  digitalWrite(bomba, HIGH);
 }
 /*
   const int pinoSensor = A0; //PINO UTILIZADO PELO SENSOR
   int valorLido; //VARIÁVEL QUE ARMAZENA O PERCENTUAL DE UMIDADE DO SOLO
-
   int analogSoloSeco = 400; //VALOR MEDIDO COM O SOLO SECO (VOCÊ PODE FAZER TESTES E AJUSTAR ESTE VALOR)
   int analogSoloMolhado = 150; //VALOR MEDIDO COM O SOLO MOLHADO (VOCÊ PODE FAZER TESTES E AJUSTAR ESTE VALOR)
   int percSoloSeco = 0; //MENOR PERCENTUAL DO SOLO SECO (0% - NÃO ALTERAR)
   int percSoloMolhado = 100; //MAIOR PERCENTUAL DO SOLO MOLHADO (100% - NÃO ALTERAR)
-
   void setup(){
   Serial.begin(9600); //INICIALIZA A SERIAL
   Serial.println("Lendo a umidade do solo..."); //IMPRIME O TEXTO NO MONITOR SERIAL
   delay(2000); //INTERVALO DE 2 SEGUNDOS
   }
-
   void loop(){
   valorLido = constrain(analogRead(pinoSensor),analogSoloMolhado,analogSoloSeco); //MANTÉM valorLido DENTRO DO INTERVALO (ENTRE analogSoloMolhado E analogSoloSeco)
   valorLido = map(valorLido,analogSoloMolhado,analogSoloSeco,percSoloMolhado,percSoloSeco); //EXECUTA A FUNÇÃO "map" DE ACORDO COM OS PARÂMETROS PASSADOS
